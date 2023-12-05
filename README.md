@@ -2,8 +2,10 @@
 
 ## 1 BASE FEATURES 
 
-Database ->  SQLite 
+Database ->  SQLite (Name, Last Name, Retrieved email, Validated Flag)
+
 Backend end -> Django 
+
 Front-end -> ReactJS 
 
 ALL IN DOCKER  
