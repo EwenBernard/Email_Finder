@@ -68,6 +68,38 @@ def get_database_path():
     return db_file_path
 
 
+def add_column(conn, column_name, column_type, table_name):
+    try:
+        cur = conn.cursor()
+        add_column = f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_type}"
+        cur.execute(add_column)
+        return True
+    except Error as e:
+        print(e)
+        return False
+
+'''
+def format_query_from_entry_dict(entry_dict):
+
+
+
+def add_entry_to_email_table(entry_dict):
+    """Add Entry to email_contact_table
+
+    Args:
+        entry_dict (_type_): entry dict. The dict key represent the column name and value the data to insert. 
+                             if multiple entry need to be inserted, pass a list of value for each keys. 
+                             If no value is provided for a key, a NULL value will be inserted in the column.
+                             Example : {"name": ["Ewen", "Tom"], "last_name": ["BERNARD", "Jerry"]}
+    """
+    try:
+        conn = create_connection(get_database_path())
+        cur = conn.cursor()
+        add_entry = f"INSERT INTO {EMAIL_TABLE_NAME} {columns} VALUES {values}"
+    except Error as e: 
+        print(e)
+
+
 if __name__ == '__main__':
 
     connection = create_connection(get_database_path())
@@ -80,5 +112,8 @@ if __name__ == '__main__':
                             name TEXT NOT NULL,
                             last_name TEXT NOT NULL, 
                             reconstructed_email TEXT""")
+            add_column(connection, "company_name", "TEXT", EMAIL_TABLE_NAME)
+            add_column(connection, "company_domain", "TEXT", EMAIL_TABLE_NAME)
         print(retrieve_table_schema(connection, EMAIL_TABLE_NAME))
         connection.close()
+'''
