@@ -78,6 +78,18 @@ def add_column(conn, column_name, column_type, table_name):
         print(e)
         return False
 
+def select_data(): 
+    conn = create_connection(get_database_path())
+    cur = conn.cursor()
+    select_entry = f"SELECT * FROM {EMAIL_TABLE_NAME}"
+    cur.execute(select_entry)
+    cur.fetchall()
+
+rows = select_data()
+
+for row in rows:
+     print(dict(row))
+
 '''
 def format_query_from_entry_dict(entry_dict):
 
