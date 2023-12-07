@@ -2,8 +2,6 @@ import sqlite3
 from sqlite3 import Error
 import os
 
-
-
 CREATE_TABLE = False
 DB_NAME = "pythonsqlite.db"
 EMAIL_TABLE_NAME = "email_contact_table"
@@ -78,39 +76,6 @@ def add_column(conn, column_name, column_type, table_name):
         print(e)
         return False
 
-def select_data(): 
-    conn = create_connection(get_database_path())
-    cur = conn.cursor()
-    select_entry = f"SELECT * FROM {EMAIL_TABLE_NAME}"
-    cur.execute(select_entry)
-    cur.fetchall()
-
-rows = select_data()
-
-for row in rows:
-     print(dict(row))
-
-'''
-def format_query_from_entry_dict(entry_dict):
-
-
-
-def add_entry_to_email_table(entry_dict):
-    """Add Entry to email_contact_table
-
-    Args:
-        entry_dict (_type_): entry dict. The dict key represent the column name and value the data to insert. 
-                             if multiple entry need to be inserted, pass a list of value for each keys. 
-                             If no value is provided for a key, a NULL value will be inserted in the column.
-                             Example : {"name": ["Ewen", "Tom"], "last_name": ["BERNARD", "Jerry"]}
-    """
-    try:
-        conn = create_connection(get_database_path())
-        cur = conn.cursor()
-        add_entry = f"INSERT INTO {EMAIL_TABLE_NAME} {columns} VALUES {values}"
-    except Error as e: 
-        print(e)
-
 
 if __name__ == '__main__':
 
@@ -128,4 +93,3 @@ if __name__ == '__main__':
             add_column(connection, "company_domain", "TEXT", EMAIL_TABLE_NAME)
         print(retrieve_table_schema(connection, EMAIL_TABLE_NAME))
         connection.close()
-'''
