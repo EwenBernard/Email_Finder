@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Finder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        form, ul {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin-bottom: 10px;
+            border-radius: 10px; 
+        }
+
+        button {
+            padding: 10px;
+            width: 80px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 10px; 
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            color: red;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Email Finder</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="last_name" placeholder="Last Name" required>
+        <input type="text" name="company_name" placeholder="Company Name" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for user in users %}
+            <li>
+                {{ user.name }} {{ user.last_name }} ({{ user.reconstructed_email }}) - Company: {{ user.company_name }}
+                <form action="/update/{{ user.id }}" method="post" style="display:inline;">
+                    <input type="text" name="name" placeholder="Update Name">
+                    <input type="text" name="last_name" placeholder="Update Last Name">
+                    <input type="text" name="company_name" placeholder="Update Company Name">
+                    <button type="submit">Update</button>
+                </form>
+                <form action="/delete/{{ user.id }}" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>
