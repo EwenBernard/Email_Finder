@@ -113,8 +113,12 @@ if __name__ == '__main__':
                             name TEXT NOT NULL,
                             last_name TEXT NOT NULL, 
                             reconstructed_email TEXT""")
-            add_column(connection, "company_name", "TEXT", EMAIL_TABLE_NAME)
-            add_column(connection, "company_domain", "TEXT", EMAIL_TABLE_NAME)
+        """
+        add_column(connection, "source_1", "TEXT", EMAIL_TABLE_NAME)
+        add_column(connection, "source_2", "TEXT", EMAIL_TABLE_NAME)
+        add_column(connection, "confidence", "INTEGER", EMAIL_TABLE_NAME)
+        add_column(connection, "best_match", "INTEGER", EMAIL_TABLE_NAME)
+        """
         print(retrieve_table_schema(connection, EMAIL_TABLE_NAME))
         print("clear", clear_table(connection, EMAIL_TABLE_NAME))
         print(select_all(connection, EMAIL_TABLE_NAME))

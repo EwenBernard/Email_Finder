@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from retrieve_domain import get_email_from_hunter, match_user_input
 import os
@@ -22,13 +22,18 @@ class User(db.Model):
     last_name = db.Column(db.String(80), nullable=False)
     reconstructed_email = db.Column(db.String(120))
     company_name = db.Column(db.String(120))
+    source_1 = db.Column(db.String(500))
+    confidence = db.Column(db.Integer())
+    best_match = db.Column(db.Integer())
+
 
     __tablename__ = 'email_contact_table'
-    
+
+
 @app.route('/')
 def index():
-    users = User.query.all()
-    return render_template('index.html', users=users)
+    return render_template('index.html')
+
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_user():
@@ -37,27 +42,78 @@ def add_user():
         name = request.form['name']
         last_name = request.form['last_name']
         company_name = request.form['company_name']
-        """
+        
         # Utilisez la nouvelle fonction pour obtenir l'e-mail et le reste des données
         hunter_data = get_email_from_hunter(name, last_name, company_name)
         matched_result, remaining_data = match_user_input(f"{name} {last_name}", hunter_data)
+        """
         if matched_result:
             new_user = User(name=matched_result['name'],
                             last_name=matched_result['last_name'],
                             reconstructed_email=matched_result['email'],
-                            company_name=matched_result['company'])
+                            company_name=matched_result['company'],
+                            source_1=matched_result['source'],
+                            confidence=matched_result['confidence'],
+                            best_match=1)
             db.session.add(new_user)
             db.session.commit()
-        """
+        for user in remaining_data:
+            new_user = User(name=user['name'],
+                        last_name=user['last_name'],
+                        reconstructed_email=user['email'],
+                        company_name=user['company'],
+                        source_1=user['source'],
+                        confidence=user['confidence'],
+                        best_match=0)
+            db.session.add(new_user)
+            db.session.commit()
+        
         new_user = User(name=request.form['name'],
                         last_name=request.form['last_name'],
                         reconstructed_email="test@gmail.com",
                         company_name=request.form['company_name'])
         db.session.add(new_user)
         db.session.commit()
-
-        return redirect('/')
+        response_data = {
+        'matched_result': matched_result,
+        'remaining_data': remaining_data
+        }
+        """
+        fake_data = {
+    'matched_result': {
+        'name': 'Jean',
+        'last_name': 'Soma',
+        'reconstructed_email': 'jean.soma@example.com',
+        'company_name': 'efrei.fr',
+        'sources': ["mcdo.com"],
+        'confidence': 92,
+        'best_match': 1,
+    },
+    'remaining_data': [
+        {
+            'name': 'Jane',
+            'last_name': 'Smith',
+            'reconstructed_email': 'jane.smith@example.com',
+            'company_name': 'XYZ Ltd',
+            'sources': ['Source 2'],
+            'confidence': 85,
+            'best_match': 0,
+        },
+        {
+            'name': 'Bob',
+            'last_name': 'Johnson',
+            'reconstructed_email': 'bob.johnson@example.com',
+            'company_name': '123 Corp',
+            'sources': ['Source 3'],
+            'confidence': 90,
+            'best_match': 0,
+        }
+        # Add more entries as needed
+    ]
+}
+        return jsonify(fake_data)
     return render_template('index.html')
+
 
 @app.route('/update/<int:user_id>', methods=['POST'])
 def update_user(user_id):
