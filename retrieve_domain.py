@@ -26,7 +26,8 @@ first_name = "jean"
 last_name = "soma"
 company = "efrei.fr"
 
-email = get_email_from_hunter(first_name, last_name, company)
+#email = get_email_from_hunter(first_name, last_name, company)
+email = "jean.soma@efrei.fr"
 
 if email:
     print(f"L'adresse e-mail trouvée est : {email}")

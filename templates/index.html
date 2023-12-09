@@ -3,104 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Finder</title>
+    <title>Form Example</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #EEF0F3; /* Set the background color of the website */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
-        h1 {
-            background-color: #007bff;
-            color: white;
-            padding: 10px;
-            text-align: center;
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #A1A7AD;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0;
+            background-color: #F7F9FA;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: margin-top 1s ease
         }
-
+        .page-container{
+            width: 655px;
+            margin-right: auto;
+            margin-left: auto;
+            margin-top: 250px;
+        }
+        .form-container.slide-up {
+            margin-top: -20vh;
+        }
         form {
-            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap; /* Allow form elements to wrap to the next line if needed */
+            align-items: stretch; /* Make form elements stretch to fill the container vertically */
+            border: 1px solid #C7CDD4; /* Set the border color for the form container to #FF5733 */
+            border-radius: 6px; /* Optional: Add some border-radius for a rounded look */
+            overflow: hidden; /* Ensure the border doesn't interfere with the child elements */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        form, ul {
-            width: 80%;
-            margin: 20px auto;
+        .form-group {
+            display: flex;
+            align-items: stretch; /* Make form group elements stretch to fill the container vertically */
+            border-right: 1px solid #C7CDD4; /* Add delimiter between form group elements */
         }
-
-        input[type="text"] {
+        .form-group:last-child {
+            border-right: none; /* Remove delimiter from the last form group element */
+        }
+        .form-group input,
+        .form-group label,
+        .form-group .search-button,
+        .form-group .at-symbol {
+            border: none; /* Remove borders on individual elements */
             padding: 10px;
-            width: calc(100% - 22px);
-            margin-bottom: 10px;
-            border-radius: 10px; 
+            padding-top: 20px;
+            padding-bottom: 20px;
+            margin: 0;
+            flex: 1;
+            border-radius: 0;
+            outline: none;
+            background-color: #F7F9FA;
         }
-
-        button {
-            padding: 10px;
-            width: 80px;
-            background-color: #007bff;
-            color: white;
-            border: none;
+        .form-group .search-button {
+            background-color: #F7F9FA;
+            color: #1D262E;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            border-radius: 10px; 
+        }
+        .form-group .at-symbol {
+            font-size: 20px;
+            border-right: 1px solid #C7CDD4;
+            padding-right: 10px;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .hidden-result-container{
+            display: none;
+            opacity: 0;
+            animation: fadeIn 1s ease;
+        }
+        .hidden-result-container.show {
+            display: block;
+            opacity: 1;
         }
 
-        ul {
-            list-style-type: none;
-            padding: 0;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
-        li {
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 5px;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        .result-list-container {
+            opacity: 0;
         }
 
-        a {
-            color: red;
-            text-decoration: none;
+        .result-list-container.show {
+            opacity: 1;
+            animation: fadeIn 1s ease;
+        }
+    
+        /* Result container styles */
+        .result-container, 
+        .result-list-container{
+            position: sticky;
+            background-color: #F7F9FA;
+            padding: 20px;
+            width: auto;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #C7CDD4;
+            border-radius: 6px;
+            padding-bottom: 0;
+            padding-top: 10px;
+        }
+
+        .result-divider {
+            width: 100%;
+            border-top: 1px solid #C7CDD4;
+            margin: 20px 0;
+        }
+
+        .source-list p {
+            margin: 0;
+            font-size: 15px;
+            margin-left: 20px;
+        }
+
+        .source-list{
+            padding-bottom: 0;
+        }
+
+        .source-list ul {
+            list-style-type: none; /* Remove bullet points */
+            padding: 0; /* Remove default padding */
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .source-list li {
+            font-size: 14px; /* Adjust the font size as needed */
+            margin-bottom: 8px; /* Add margin between list items */
+        }
+            
+        .contact {
+            display: flex;
+            align-items: top;
+        }
+    
+        .contact-photo {
+            background-color: #1D262E;
+            color: #fff;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-left: 15px;
+            margin-right: 20px;  
+            margin-top: 10px;
+            padding-left : 4px;
+            letter-spacing: 4px;
+        }
+
+        .contact-info p {
+            margin-bottom: 3px;
+            margin-top: 3px;
+        }
+
+        .contact-info p:first-child {
+            font-weight: bold;
+        }
+    
+        .contact-info {
+            flex: 1;
+            margin: 5px;
             margin-left: 10px;
+            padding-top: 10px;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .confidence-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
+
+        .tag {
+            display: inline-block;
+            padding: 6px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+            border-radius: 4px;
+            background-color: #C6F2C5; /* Light green background color */
+            color: #24A522; /* White text color */
+            text-align: center;
+            margin-left: 4px;
+        }
+
+        #tag-icon {
+            position: relative;
+            top: 1px;
+        }
+
+        .tag_label{
+            position: relative;
+            font-size: 13px;
+            color:
+        }
+
+        .result-list-container ul {
+            list-style-type: none; /* Remove the default bullet points */
+            padding: 0; /* Remove default padding on the ul */
+        }
+
+        .result-list-container li {
+            padding: 10px; /* Add padding to each list item for spacing */
+            margin-bottom: 5px; /* Add margin-bottom to create separation between list items */
+            border-bottom: 1px solid #C7CDD4 /* Add padding to each list item for spacing */
+        }
+
+        .result-list-container li:last-child {
+            border-bottom: none; /* Remove the separator from the last list item */
+        }
+
     </style>
 </head>
 <body>
-    <h1>Email Finder</h1>
+    <div class="page-container">
+        <div class="form-container" id="formContainer" action="/add" method="post">
+            <form>
+                <div class="form-group">
+                    <input type="text" id="name" name="name" placeholder="Name">
+                </div>
 
-    <form action="/add" method="post">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="text" name="last_name" placeholder="Last Name" required>
-        <input type="text" name="company_name" placeholder="Company Name" required>
-        <button type="submit">Add</button>
-    </form>
+                <div class="form-group">
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name">
+                </div>
 
-    <ul>
-        {% for user in users %}
-            <li>
-                {{ user.name }} {{ user.last_name }} ({{ user.reconstructed_email }}) - Company: {{ user.company_name }}
-                <form action="/update/{{ user.id }}" method="post" style="display:inline;">
-                    <input type="text" name="name" placeholder="Update Name">
-                    <input type="text" name="last_name" placeholder="Update Last Name">
-                    <input type="text" name="company_name" placeholder="Update Company Name">
-                    <button type="submit">Update</button>
-                </form>
-                <form action="/delete/{{ user.id }}" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+                <div class="form-group">
+                    <span class="at-symbol">@</span>
+                    <input type="text" id="company" name="company" placeholder="Company">
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="search-button" value="Search">
+                </div>
+            </form>
+        </div>
+        <div class="hidden-result-container" id="resultContainer">
+            <div class="result-container">
+                <div class="contact">
+                    <div class="contact-photo">AD</div>
+                    <div class="contact-info">
+                        <p>John Doe</p>
+                        <p>john.doe@example.com</p>
+                        <p>ABC Corp</p>
+                        <div class="confidence-tag">
+                            <span class="tag tag--success" data-controller="tooltip" title="Confidence">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-shield-fill-check" viewBox="0 0 16 16" id="tag-icon">
+                                    <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0m2.146 5.146a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647z"/>
+                                </svg>
+                                <span class="tag_label"><b>97%</b></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <hr class="result-divider">
+                <div class="source-list">
+                    <p>Sources where we found the email adress on the web:</p>
+                    <ul>
+                        <li>Source 1</li>
+                        <li>Source 2</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="result-list-container">
+                <p>Other Related Results</pp>
+                {% for user in users %}
+                <ul>
+                    <li>
+                        {{ user.name }} {{ user.last_name }} ({{ user.reconstructed_email }})
+                    </li>
+                </ul>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var formContainer = document.getElementById('formContainer');
+            var resultContainer = document.getElementById('resultContainer');
+            var resultListComponent = document.querySelector('.result-list-container');
+            var form = document.querySelector('form');
     
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+    
+                // Check if the result container is already visible
+                if (resultContainer.classList.contains('show')) {
+                    return; // If visible, do nothing
+                }
+    
+                // Add the class to initiate the transition
+                formContainer.classList.add('slide-up');
+    
+                // After a short delay, display the result container with a transition
+                setTimeout(function () {
+                    resultContainer.classList.add('show');
+                }, 100);
+
+                setTimeout(function () {
+                    resultListComponent.classList.add('show');
+                }, 300);
+            });
+        });
+    </script>
 </body>
 </html>
