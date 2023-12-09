@@ -75,6 +75,30 @@ def add_column(conn, column_name, column_type, table_name):
     except Error as e:
         print(e)
         return False
+    
+
+def clear_table(conn, table_name):
+    try:
+        cur = conn.cursor()
+        clear_entries = f"DELETE FROM {table_name}"
+        cur.execute(clear_entries)
+        conn.commit()
+        return True
+    except Error as e:
+        print(e)
+        return False
+
+
+def select_all(conn, table_name):
+    try:
+        cur = conn.cursor()
+        cmd = f"SELECT * FROM {table_name}"
+        entries = cur.execute(cmd)
+        entries = cur.fetchall() 
+        return entries
+    except Error as e:
+        print(e)
+        return False
 
 
 if __name__ == '__main__':
@@ -92,4 +116,6 @@ if __name__ == '__main__':
             add_column(connection, "company_name", "TEXT", EMAIL_TABLE_NAME)
             add_column(connection, "company_domain", "TEXT", EMAIL_TABLE_NAME)
         print(retrieve_table_schema(connection, EMAIL_TABLE_NAME))
+        print("clear", clear_table(connection, EMAIL_TABLE_NAME))
+        print(select_all(connection, EMAIL_TABLE_NAME))
         connection.close()
