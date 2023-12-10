@@ -6,13 +6,15 @@ import os
 #app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///pythonsqlite.db'
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../views/static', template_folder='../views/templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'db', 'pythonsqlite.db')
 
+"""
 templates_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'views', 'templates')
 print(templates_folder_path)
 app.config['TEMPLATE_FOLDER'] = templates_folder_path
 app.template_folder = app.config['TEMPLATE_FOLDER']
+"""
 
 db = SQLAlchemy(app)
 
@@ -46,7 +48,7 @@ def add_user():
         # Utilisez la nouvelle fonction pour obtenir l'e-mail et le reste des données
         hunter_data = get_email_from_hunter(name, last_name, company_name)
         matched_result, remaining_data = match_user_input(f"{name} {last_name}", hunter_data)
-        """
+        
         if matched_result:
             new_user = User(name=matched_result['name'],
                             last_name=matched_result['last_name'],
@@ -80,38 +82,60 @@ def add_user():
         }
         """
         fake_data = {
-    'matched_result': {
-        'name': 'Jean',
-        'last_name': 'Soma',
-        'reconstructed_email': 'jean.soma@example.com',
-        'company_name': 'efrei.fr',
-        'sources': ["mcdo.com"],
-        'confidence': 92,
-        'best_match': 1,
-    },
-    'remaining_data': [
-        {
-            'name': 'Jane',
-            'last_name': 'Smith',
-            'reconstructed_email': 'jane.smith@example.com',
-            'company_name': 'XYZ Ltd',
-            'sources': ['Source 2'],
-            'confidence': 85,
-            'best_match': 0,
-        },
-        {
-            'name': 'Bob',
-            'last_name': 'Johnson',
-            'reconstructed_email': 'bob.johnson@example.com',
-            'company_name': '123 Corp',
-            'sources': ['Source 3'],
-            'confidence': 90,
-            'best_match': 0,
+            'matched_result': {
+                'name': 'Jean',
+                'last_name': 'Soma',
+                'reconstructed_email': 'jean.soma@example.com',
+                'company_name': 'efrei.fr',
+                'sources': ["mcdo.com"],
+                'confidence': 92,
+                'best_match': 1,
+            },
+            'remaining_data': [
+                {
+                    'name': 'Jane',
+                    'last_name': 'Smith',
+                    'reconstructed_email': 'jane.smith@example.com',
+                    'company_name': 'XYZ Ltd',
+                    'sources': ['Source 2'],
+                    'confidence': 85,
+                    'best_match': 0,
+                },
+                {
+                    'name': 'Bob',
+                    'last_name': 'Johnson',
+                    'reconstructed_email': 'bob.johnson@example.com',
+                    'company_name': '123 Corp',
+                    'sources': ['Source 3'],
+                    'confidence': 90,
+                    'best_match': 0,
+                }]}
+    
+        empty_data = {
+            'matched_result' : [],
+            'remaining_data': [
+                {
+                    'name': 'Jane',
+                    'last_name': 'Smith',
+                    'reconstructed_email': 'jane.smith@example.com',
+                    'company_name': 'XYZ Ltd',
+                    'sources': ['Source 2'],
+                    'confidence': 85,
+                    'best_match': 0,
+                },
+                {
+                    'name': 'Bob',
+                    'last_name': 'Johnson',
+                    'reconstructed_email': 'bob.johnson@example.com',
+                    'company_name': '123 Corp',
+                    'sources': ['Source 3'],
+                    'confidence': 90,
+                    'best_match': 0,
+                }
+            ]
         }
-        # Add more entries as needed
-    ]
-}
-        return jsonify(fake_data)
+        """
+        return jsonify(response_data)
     return render_template('index.html')
 
 

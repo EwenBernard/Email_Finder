@@ -1,0 +1,274 @@
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #EEF0F3; /* Set the background color of the website */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #A1A7AD;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 0;
+    background-color: #F7F9FA;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: margin-top 1s ease
+}
+.page-container{
+    width: 655px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 250px;
+}
+.form-container.slide-up {
+    margin-top: -20vh;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap; /* Allow form elements to wrap to the next line if needed */
+    align-items: stretch; /* Make form elements stretch to fill the container vertically */
+    border: 1px solid #C7CDD4; /* Set the border color for the form container to #FF5733 */
+    border-radius: 6px; /* Optional: Add some border-radius for a rounded look */
+    overflow: hidden; /* Ensure the border doesn't interfere with the child elements */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form-group {
+    display: flex;
+    align-items: stretch; /* Make form group elements stretch to fill the container vertically */
+    border-right: 1px solid #C7CDD4; /* Add delimiter between form group elements */
+}
+.form-group:last-child {
+    border-right: none; /* Remove delimiter from the last form group element */
+}
+.form-group input,
+.form-group label,
+.form-group .search-button,
+.form-group .at-symbol {
+    border: none; /* Remove borders on individual elements */
+    padding: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 0;
+    flex: 1;
+    border-radius: 0;
+    outline: none;
+    background-color: #F7F9FA;
+}
+.form-group .search-button {
+    background-color: #F7F9FA;
+    color: #1D262E;
+    cursor: pointer;
+}
+.form-group .at-symbol {
+    font-size: 20px;
+    border-right: 1px solid #C7CDD4;
+    padding-right: 10px;
+}
+
+.hidden-result-container{
+    display: none;
+    opacity: 0;
+    animation: fadeIn 1s ease;
+}
+.hidden-result-container.show {
+    display: block;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.result-list-container {
+    opacity: 0;
+}
+
+.result-list-container.show {
+    opacity: 1;
+    animation: fadeIn 1s ease;
+}
+
+/* Result container styles */
+.result-container, 
+.result-list-container{
+    position: sticky;
+    background-color: #F7F9FA;
+    padding: 20px;
+    width: auto;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #C7CDD4;
+    border-radius: 6px;
+    padding-bottom: 0;
+    padding-top: 10px;
+}
+
+.result-divider {
+    width: 100%;
+    border-top: 1px solid #C7CDD4;
+    margin: 20px 0;
+}
+
+.source-list p {
+    margin: 0;
+    font-size: 15px;
+    margin-left: 20px;
+    color: #4C555E;
+}
+
+.source-list{
+    padding-bottom: 0;
+}
+
+.source-list ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.source-list li {
+    font-size: 14px; /* Adjust the font size as needed */
+    margin-bottom: 8px; /* Add margin between list items */
+}
+    
+.contact {
+    display: flex;
+    align-items: top;
+}
+
+.contact-photo {
+    background-color: #FD006B;
+    color: #fff;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin-left: 15px;
+    margin-right: 20px;  
+    margin-top: 10px;
+    padding-left : 4px;
+    letter-spacing: 4px;
+}
+
+.related-contact-photo {
+    background-color: #FD006B;
+    color: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-left: 7px;
+    margin-right: 10px;  
+    margin-top: 5px;
+    padding-left : 3px;
+    letter-spacing: 3px;
+}
+
+.related_result_container p {
+    margin-bottom: 3px;
+    margin-top: 3px;
+    color: #4C555E;
+}
+
+.related_result_container p:first-child {
+    font-weight: bold;
+    color: #28323B;
+}
+
+.related_result_container {
+    flex: 1;
+    margin: 5px;
+    margin-left: 10px;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+.contact-info p {
+    margin-bottom: 3px;
+    margin-top: 3px;
+    color: #4C555E;
+}
+
+.contact-info p:first-child {
+    font-weight: bold;
+    color: #28323B;
+}
+
+.contact-info {
+    flex: 1;
+    margin: 5px;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+
+.confidence-tag {
+    position: absolute;
+    top: 40px;
+    right: 25px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 4px;
+    background-color: #C6F2C5; /* Light green background color */
+    color: #24A522; /* White text color */
+    text-align: center;
+    margin-left: 4px;
+}
+
+#tag-icon {
+    position: relative;
+    top: 1px;
+}
+
+.tag_label{
+    position: relative;
+    font-size: 13px;
+}
+
+.li-result-wrapper{
+    display: flex; 
+    align-items: center;
+}
+
+.result-list-container ul {
+    list-style-type: none; /* Remove the default bullet points */
+    padding: 0; /* Remove default padding on the ul */
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.result-list-container li {
+    padding: 5px; /* Add padding to each list item for spacing */
+    border-bottom: 1px solid #C7CDD4 /* Add padding to each list item for spacing */
+}
+
+.result-list-container li:last-child {
+    border-bottom: none; /* Remove the separator from the last list item */
+}
+
+.result-list-title{
+    margin: 10px;
+    margin-bottom: 0px;
+}
