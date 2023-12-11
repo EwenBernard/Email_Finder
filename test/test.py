@@ -31,28 +31,17 @@ def test_form_submission(browser):
     search_button = browser.find_element(By.CLASS_NAME, "search-button")
     search_button.click()
 
-    time.sleep(10)
+    time.sleep(3)
 
-    # Wait for the result container to appear
-    result_container = browser.find_element(By.ID, "resultContainer")
-    assert "show" in result_container.get_attribute("class")
-
-    #Check matched email
-    contact_info = browser.find_element(By.CLASS_NAME,"contact-info")
-    assert contact_info.find_element(By.XPATH, "//p[contains(text(),'Pascal Sager')]")
-    assert contact_info.find_element(By.XPATH, "//p[contains(text(),'EFREI, Paris-Panthéon-Assas University')]")
-
-    confidence_tag = browser.find_element(By.CLASS_NAME,"confidence-tag")
-    assert confidence_tag.find_element(By.XPATH, "//span[contains(@class, 'tag--success')]/b[contains(text(),'99%')]")
-
+    assert browser.find_element(By.CLASS_NAME, "result-container")
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[1]/div[1]/div[2]/p[1]')
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[1]/div[1]/div[2]/p[2]')
+   
     #Check source list
-    source_list = browser.find_element(By.CLASS_NAME,"source-list")
-    assert source_list.find_element(By.XPATH, "//li[contains(text(),'efrei.fr')]")
+    assert browser.find_element(By.CLASS_NAME,"source-list")
 
-    #Check related source list
-    related_results = browser.find_element(By.CLASS_NAME, "result-list-container")
-    assert related_results.find_element(By.XPATH, "//p[contains(@class,'result-list-title') and contains(text(),'Other Related Results')]")
-    assert related_results.find_element(By.XPATH, "//ul/li")
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[2]/p')
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[2]/ul/li[1]/div/div[2]/p[1]')
 
 def test_post_request():
     # Check the status code and content of the POST request

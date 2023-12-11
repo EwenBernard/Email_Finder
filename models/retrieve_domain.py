@@ -6,7 +6,7 @@ def get_email_from_hunter(first_name, last_name, company):
         
         params = {
             "company": company,
-            "api_key": "58f5d6980b1a5b9b191d4185525104dc40b8eb57"
+            "api_key": "b18518ca2df34f86a00242e974b7866469b51702"
         }
         response = requests.get(url, params=params)
         data = response.json()
@@ -19,7 +19,7 @@ def get_email_from_hunter(first_name, last_name, company):
         params = {
             "first_name": first_name,
             "last_name": last_name,
-            "api_key": "58f5d6980b1a5b9b191d4185525104dc40b8eb57"
+            "api_key": "b18518ca2df34f86a00242e974b7866469b51702"
         }
 
         if data["data"]["domain"]:

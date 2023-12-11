@@ -71,14 +71,14 @@ def add_user():
                             best_match=0)
                 db.session.add(new_user)
                 db.session.commit()
-    """
+    
     new_user = User(name=request.form['name'],
                     last_name=request.form['last_name'],
                     reconstructed_email="test@gmail.com",
                     company_name=request.form['company_name'])
     db.session.add(new_user)
     db.session.commit()
-    """
+    
     response_data = {
     'matched_result': matched_result,
     'remaining_data': remaining_data
@@ -88,9 +88,9 @@ def add_user():
         'matched_result': {
             'name': 'Jean',
             'last_name': 'Soma',
-            'reconstructed_email': 'jean.soma@example.com',
-            'company_name': 'efrei.fr',
-            'sources': ["mcdo.com"],
+            'email': 'jean.soma@example.com',
+            'company': 'efrei.fr',
+            'sources': "mcdo.com",
             'confidence': 92,
             'best_match': 1,
         },
@@ -98,22 +98,22 @@ def add_user():
             {
                 'name': 'Jane',
                 'last_name': 'Smith',
-                'reconstructed_email': 'jane.smith@example.com',
-                'company_name': 'XYZ Ltd',
-                'sources': ['Source 2'],
+                'email': 'jane.smith@example.com',
+                'company': 'XYZ Ltd',
+                'sources': 'Source 2',
                 'confidence': 85,
                 'best_match': 0,
             },
             {
                 'name': 'Bob',
                 'last_name': 'Johnson',
-                'reconstructed_email': 'bob.johnson@example.com',
-                'company_name': '123 Corp',
-                'sources': ['Source 3'],
+                'email': 'bob.johnson@example.com',
+                'company': '123 Corp',
+                'sources': 'Source 3',
                 'confidence': 90,
                 'best_match': 0,
             }]}
-
+    
     empty_data = {
         'matched_result' : [],
         'remaining_data': [
