@@ -29,7 +29,6 @@ def get_email_from_hunter(first_name, last_name, company):
         response = requests.get(url, params=params)
         data = response.json()
 
-        # Check if the request was successful
         response.raise_for_status()
         return data
 

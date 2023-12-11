@@ -138,6 +138,7 @@ def add_user():
         ]
     }
     """
+    
     return jsonify(response_data)
 
 
