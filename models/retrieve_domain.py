@@ -1,31 +1,58 @@
 import requests
 
 def get_email_from_hunter(first_name, last_name, company):
-    url = "https://api.hunter.io/v2/domain-search"
+    try:
+        url = "https://api.hunter.io/v2/domain-search"
+        
+        params = {
+            "company": company,
+            "api_key": "58f5d6980b1a5b9b191d4185525104dc40b8eb57"
+        }
+        response = requests.get(url, params=params)
+        data = response.json()
+        print(data)
 
-    params = {
-        "company": company,
-        "first_name": first_name,
-        "last_name": last_name,
-        "api_key": "58f5d6980b1a5b9b191d4185525104dc40b8eb57"
-    }
+        # Check if the request was successful
+        response.raise_for_status()
+        print("DOMAIN", data["data"]["domain"])
 
-    response = requests.get(url, params=params)
-    data = response.json()
-    return data 
+        params = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "api_key": "58f5d6980b1a5b9b191d4185525104dc40b8eb57"
+        }
+
+        if data["data"]["domain"]:
+            params["domain"] = data["data"]["domain"]
+        else:
+            params["company"] = company
+        
+        print(params)
+
+        response = requests.get(url, params=params)
+        data = response.json()
+
+        # Check if the request was successful
+        response.raise_for_status()
+
+        print(data)
+        return data
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
 
 
 
-def match_user_input(user_input, hunter_data):
+def match_user_input(name, last_name, hunter_data):
     matched_result = None
     remaining_data = []
+    input_name = name.lower().strip()
+    input_last_name = last_name.lower().strip()
 
     for email_data in hunter_data.get('data', {}).get('emails', []):
-        if 'first_name' in email_data and 'last_name' in email_data and 'value' in email_data:
-            full_name = f"{email_data['first_name']} {email_data['last_name']}".lower()
-            user_input_lower = user_input.lower()
-
-            if user_input_lower in full_name:
+        if 'value' in email_data:
+            if email_data['first_name'] and email_data['last_name'] and input_name == email_data['first_name'].lower() and input_last_name == email_data['last_name'].lower():
                 matched_result = {
                     'name': email_data['first_name'],
                     'last_name': email_data['last_name'],
@@ -35,14 +62,22 @@ def match_user_input(user_input, hunter_data):
                     'source': email_data.get('sources', [])[0]['domain'] if email_data.get('sources', []) else None,
                 }
             else:
+                if not email_data.get('first_name', '') and not email_data.get('last_name', ''):
+                    name = last_name = "Unknown"
+                else:
+                    name = email_data.get('first_name', '')
+                    last_name = email_data.get('last_name', '')
+
                 remaining_data.append({
-                    'name': email_data.get('first_name', ''),
-                    'last_name': email_data.get('last_name', ''),
+                    'name': name,
+                    'last_name': last_name,
                     'email': email_data.get('value', ''),
                     'company': hunter_data.get('data', {}).get('organization', ''),
                     'confidence': email_data.get('confidence', None),
                     'source': email_data.get('sources', [])[0]['domain'] if email_data.get('sources', []) else None,
                 })
+    if not remaining_data:
+        remaining_data = None
 
     return matched_result, remaining_data
 
