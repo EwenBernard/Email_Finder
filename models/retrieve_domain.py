@@ -10,7 +10,6 @@ def get_email_from_hunter(first_name, last_name, company):
         }
         response = requests.get(url, params=params)
         data = response.json()
-        print(data)
 
         # Check if the request was successful
         response.raise_for_status()
@@ -26,16 +25,12 @@ def get_email_from_hunter(first_name, last_name, company):
             params["domain"] = data["data"]["domain"]
         else:
             params["company"] = company
-        
-        print(params)
 
         response = requests.get(url, params=params)
         data = response.json()
 
         # Check if the request was successful
         response.raise_for_status()
-
-        print(data)
         return data
 
     except requests.exceptions.RequestException as e:
