@@ -29,7 +29,8 @@ jobs:
 
     - name: Start Flask App
       run: |
-        python models/backend_file.py 
+        gunicorn -w 4 -b 0.0.0.0:8001 backend_file:app
+
 
     - name: Wait for Flask to start
       run: |
@@ -37,4 +38,4 @@ jobs:
 
     - name: Run Selenium Tests
       run: |
-        gunicorn -w 4 -b 0.0.0.0:8001 backend_file:app
+        python test/test.py
