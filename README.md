@@ -14,4 +14,4 @@ Tester des adresse mail : concevoir un code qui reconstruit les adresses mails Ã
 
 Small demo : 
 
-![](https://github.com/EwenBernard/Email_Finder/tree/main/demo_gif.gif)
+![](https://github.com/EwenBernard/Email_Finder/blob/main/demo_gif.gif)
