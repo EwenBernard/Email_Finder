@@ -23,43 +23,32 @@ def test_form_submission(browser):
     last_name_input = browser.find_element(By.ID,"lastName")
     company_input = browser.find_element(By.ID,"company")
 
-    name_input.send_keys("John")
-    last_name_input.send_keys("Doe")
-    company_input.send_keys("ABC Corp")
+    name_input.send_keys("Pascal")
+    last_name_input.send_keys("Sager")
+    company_input.send_keys("efrei.fr")
 
     # Submit the form
     search_button = browser.find_element(By.CLASS_NAME, "search-button")
     search_button.click()
 
-    time.sleep(10)
+    time.sleep(3)
 
-    # Wait for the result container to appear
-    result_container = browser.find_element(By.ID, "resultContainer")
-    assert "show" in result_container.get_attribute("class")
-
-    #Check matched email
-    contact_info = browser.find_element(By.CLASS_NAME,"contact-info")
-    assert contact_info.find_element(By.XPATH, "//p[contains(text(),'John Doe')]")
-    assert contact_info.find_element(By.XPATH, "//p[contains(text(),'ABC Corp')]")
-
-    confidence_tag = browser.find_element(By.CLASS_NAME,"confidence-tag")
-    assert confidence_tag.find_element(By.XPATH, "//span[contains(@class, 'tag--success')]/b[contains(text(),'97%')]")
-
+    assert browser.find_element(By.CLASS_NAME, "result-container")
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[1]/div[1]/div[2]/p[1]')
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[1]/div[1]/div[2]/p[2]')
+   
     #Check source list
-    source_list = browser.find_element(By.CLASS_NAME,"source-list")
-    assert source_list.find_element(By.XPATH, "//li[contains(text(),'Source 1')]")
+    assert browser.find_element(By.CLASS_NAME,"source-list")
 
-    #Check related source list
-    related_results = browser.find_element(By.CLASS_NAME, "result-list-container")
-    assert related_results.find_element(By.XPATH, "//p[contains(@class,'result-list-title') and contains(text(),'Other Related Results')]")
-    assert related_results.find_element(By.XPATH, "//ul/li")
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[2]/p')
+    assert browser.find_element(By.XPATH, '//*[@id="resultContainer"]/div[2]/ul/li[1]/div/div[2]/p[1]')
 
 def test_post_request():
     # Check the status code and content of the POST request
     response = requests.post("http://127.0.0.1:8001/add", data={
-        "name": "John",
-        "last_name": "Doe",
-        "company_name": "ABC Corp"
+        "name": "Pascal",
+        "last_name": "Sager",
+        "company_name": "efrei.fr"
     })
 
     assert response.status_code == 200

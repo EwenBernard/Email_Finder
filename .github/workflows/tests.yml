@@ -1,0 +1,39 @@
+name: Flask and Selenium Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Start Flask App
+      run: |
+        python models/backend_file.py 
+
+    - name: Wait for Flask to start
+      run: |
+        sleep 5
+
+    - name: Run Selenium Tests
+      run: |
+        python test/test.py
