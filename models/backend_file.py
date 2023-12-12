@@ -9,12 +9,6 @@ import os
 app = Flask(__name__, static_folder='../views/static', template_folder='../views/templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'db', 'pythonsqlite.db')
 
-"""
-templates_folder_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'views', 'templates')
-print(templates_folder_path)
-app.config['TEMPLATE_FOLDER'] = templates_folder_path
-app.template_folder = app.config['TEMPLATE_FOLDER']
-"""
 
 db = SQLAlchemy(app)
 
@@ -40,106 +34,103 @@ def index():
 @app.route('/add', methods=['GET', 'POST'])
 def add_user():
     print(request.form)
-
-    name = request.form['name']
-    last_name = request.form['last_name']
-    company_name = request.form['company_name']
-    
-    # Utilisez la nouvelle fonction pour obtenir l'e-mail et le reste des données
-    hunter_data = get_email_from_hunter(name, last_name, company_name)
-    matched_result, remaining_data = match_user_input(name, last_name, hunter_data)
-    
-    if matched_result and matched_result['name'] and matched_result['last_name']:
-        new_user = User(name=matched_result['name'],
-                        last_name=matched_result['last_name'],
-                        reconstructed_email=matched_result['email'],
-                        company_name=matched_result['company'],
-                        source_1=matched_result['source'],
-                        confidence=matched_result['confidence'],
-                        best_match=1)
+    if request.method == 'POST':
+        name = request.form['name']
+        last_name = request.form['last_name']
+        company_name = request.form['company_name']
+        
+        # Utilisez la nouvelle fonction pour obtenir l'e-mail et le reste des données
+        hunter_data = get_email_from_hunter(name, last_name, company_name)
+        matched_result, remaining_data = match_user_input(name,last_name, hunter_data)
+        
+        if matched_result:
+            new_user = User(name=matched_result['name'],
+                            last_name=matched_result['last_name'],
+                            reconstructed_email=matched_result['email'],
+                            company_name=matched_result['company'],
+                            source_1=matched_result['source'],
+                            confidence=matched_result['confidence'],
+                            best_match=1)
+            db.session.add(new_user)
+            db.session.commit()
+        for user in remaining_data:
+            new_user = User(name=user['name'],
+                        last_name=user['last_name'],
+                        reconstructed_email=user['email'],
+                        company_name=user['company'],
+                        source_1=user['source'],
+                        confidence=user['confidence'],
+                        best_match=0)
+            db.session.add(new_user)
+            db.session.commit()
+        
+        new_user = User(name=request.form['name'],
+                        last_name=request.form['last_name'],
+                        reconstructed_email="test@gmail.com",
+                        company_name=request.form['company_name'])
         db.session.add(new_user)
         db.session.commit()
-    if remaining_data:
-        for user in remaining_data:
-            if user['name'] and user['last_name']:
-                new_user = User(name=user['name'],
-                            last_name=user['last_name'],
-                            reconstructed_email=user['email'],
-                            company_name=user['company'],
-                            source_1=user['source'],
-                            confidence=user['confidence'],
-                            best_match=0)
-                db.session.add(new_user)
-                db.session.commit()
-    
-    new_user = User(name=request.form['name'],
-                    last_name=request.form['last_name'],
-                    reconstructed_email="test@gmail.com",
-                    company_name=request.form['company_name'])
-    db.session.add(new_user)
-    db.session.commit()
-    
-    response_data = {
-    'matched_result': matched_result,
-    'remaining_data': remaining_data
-    }
-    """
-    fake_data = {
-        'matched_result': {
-            'name': 'Jean',
-            'last_name': 'Soma',
-            'email': 'jean.soma@example.com',
-            'company': 'efrei.fr',
-            'sources': "mcdo.com",
-            'confidence': 92,
-            'best_match': 1,
-        },
-        'remaining_data': [
-            {
-                'name': 'Jane',
-                'last_name': 'Smith',
-                'email': 'jane.smith@example.com',
-                'company': 'XYZ Ltd',
-                'sources': 'Source 2',
-                'confidence': 85,
-                'best_match': 0,
+        response_data = {
+        'matched_result': matched_result,
+        'remaining_data': remaining_data
+        }
+        """
+        fake_data = {
+            'matched_result': {
+                'name': 'Jean',
+                'last_name': 'Soma',
+                'reconstructed_email': 'jean.soma@example.com',
+                'company_name': 'efrei.fr',
+                'sources': ["mcdo.com"],
+                'confidence': 92,
+                'best_match': 1,
             },
-            {
-                'name': 'Bob',
-                'last_name': 'Johnson',
-                'email': 'bob.johnson@example.com',
-                'company': '123 Corp',
-                'sources': 'Source 3',
-                'confidence': 90,
-                'best_match': 0,
-            }]}
+            'remaining_data': [
+                {
+                    'name': 'Jane',
+                    'last_name': 'Smith',
+                    'reconstructed_email': 'jane.smith@example.com',
+                    'company_name': 'XYZ Ltd',
+                    'sources': ['Source 2'],
+                    'confidence': 85,
+                    'best_match': 0,
+                },
+                {
+                    'name': 'Bob',
+                    'last_name': 'Johnson',
+                    'reconstructed_email': 'bob.johnson@example.com',
+                    'company_name': '123 Corp',
+                    'sources': ['Source 3'],
+                    'confidence': 90,
+                    'best_match': 0,
+                }]}
     
-    empty_data = {
-        'matched_result' : [],
-        'remaining_data': [
-            {
-                'name': 'Jane',
-                'last_name': 'Smith',
-                'reconstructed_email': 'jane.smith@example.com',
-                'company_name': 'XYZ Ltd',
-                'sources': ['Source 2'],
-                'confidence': 85,
-                'best_match': 0,
-            },
-            {
-                'name': 'Bob',
-                'last_name': 'Johnson',
-                'reconstructed_email': 'bob.johnson@example.com',
-                'company_name': '123 Corp',
-                'sources': ['Source 3'],
-                'confidence': 90,
-                'best_match': 0,
-            }
-        ]
-    }
-    """
-
-    return jsonify(response_data)
+        empty_data = {
+            'matched_result' : [],
+            'remaining_data': [
+                {
+                    'name': 'Jane',
+                    'last_name': 'Smith',
+                    'reconstructed_email': 'jane.smith@example.com',
+                    'company_name': 'XYZ Ltd',
+                    'sources': ['Source 2'],
+                    'confidence': 85,
+                    'best_match': 0,
+                },
+                {
+                    'name': 'Bob',
+                    'last_name': 'Johnson',
+                    'reconstructed_email': 'bob.johnson@example.com',
+                    'company_name': '123 Corp',
+                    'sources': ['Source 3'],
+                    'confidence': 90,
+                    'best_match': 0,
+                }
+            ]
+        }
+        """
+        return jsonify(response_data)
+    return render_template('index.html')
 
 
 @app.route('/update/<int:user_id>', methods=['POST'])
@@ -163,9 +154,37 @@ def delete_user(user_id):
     db.session.commit()
     return redirect('/')
 
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         print("Executing")
-        app.run(host='0.0.0.0', port=8001)
+        # Remplacez la ligne app.run(...) par celle-ci :
+        app.run(debug=False, host='0.0.0.0', port=8001)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
