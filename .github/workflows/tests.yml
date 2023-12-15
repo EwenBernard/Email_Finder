@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     services:
       selenium:
@@ -28,7 +29,8 @@ jobs:
 
     - name: Start Flask App
       run: |
-        python models/backend_file.py 
+        gunicorn -w 4 -b 0.0.0.0:8001 models/backend_file:app
+
 
     - name: Wait for Flask to start
       run: |
