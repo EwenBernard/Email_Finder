@@ -15,7 +15,8 @@
 - **Frontend**: Vue.js, HTML, CSS, JavaScript  
 - **Backend**: Django  
 - **Database**: SQLite  
-- **Containerization**: Docker  
+- **Containerization**: Docker
+- **CI/CD Pipeline**: Github Action for automated build, deployment and testing using selenium
 
 ## How to Run  
 1. **Clone the Repository**  
