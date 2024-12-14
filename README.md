@@ -9,14 +9,14 @@
 - **Email Reconstruction and Validation**: Automatically generates and tests possible email addresses from user and company information.  
 - **Database Integration**: Stores names, reconstructed emails, and validation flags in SQLite.  
 - **API-Driven Backend**: A Django-based RESTful API handles all operations between the front-end and the database.  
-- **Containerized for Portability**: Fully containerized with Docker, making it easy to deploy and run.  
+- **Containerized for Portability**: Fully containerized with Docker, making it easy to deploy and run.
+- **CI/CD Pipeline**: Github Action for automated build, deployment and testing using selenium
 
 ## Tech Stack  
 - **Frontend**: Vue.js, HTML, CSS, JavaScript  
 - **Backend**: Django  
 - **Database**: SQLite  
 - **Containerization**: Docker
-- **CI/CD Pipeline**: Github Action for automated build, deployment and testing using selenium
 
 ## How to Run  
 1. **Clone the Repository**  
