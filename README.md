@@ -1,7 +1,3 @@
-Here's a small README draft for your project:  
-
----
-
 # Email_Finder  
 
 **Email_Finder** is a web application for finding and validating email addresses. It reconstructs potential email addresses based on a user’s name and company, checks their validity, and provides a user-friendly Vue.js interface for easy management and visualization.  
