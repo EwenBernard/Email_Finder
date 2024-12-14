@@ -19,10 +19,6 @@
 
 ## How to Run  
 1. **Clone the Repository**  
-   ```bash  
-   git clone <repo-link>  
-   cd Email_Finder  
-   ```  
 
 2. **Build and Run with Docker**  
    - Build the Docker image:  
